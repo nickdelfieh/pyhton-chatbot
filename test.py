@@ -1,16 +1,18 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
-from PIL import Image, ImageTk
 import os
 import re
 import math
+import webbrowser
 
 chat_folder = None
 current_chat_file = None
 settings_file = "chat_settings.txt"
 
+
 def contains_large_number(s, max_digits=10):
     return any(len(num) > max_digits for num in re.findall(r'\d+', s))
+
 
 def process_message(user_input):
     if user_input in ["exit", "bye"]:
@@ -36,9 +38,11 @@ def process_message(user_input):
     else:
         return "I don't understand that yet."
 
+
 def save_chat_folder(path):
     with open(settings_file, "w") as f:
         f.write(path)
+
 
 def load_chat_folder():
     if os.path.exists(settings_file):
@@ -47,6 +51,7 @@ def load_chat_folder():
             if os.path.isdir(path):
                 return path
     return None
+
 
 def choose_chat_folder():
     global chat_folder
@@ -59,6 +64,7 @@ def choose_chat_folder():
         else:
             save_chat_folder(chat_folder)
 
+
 def update_chat_list(search_text=""):
     chat_listbox.delete(0, tk.END)
     if not chat_folder:
@@ -68,6 +74,7 @@ def update_chat_list(search_text=""):
         display_name = f[:-4]
         if search_text.lower() in display_name.lower():
             chat_listbox.insert(tk.END, display_name)
+
 
 def load_chat(filename):
     global current_chat_file
@@ -93,6 +100,7 @@ def load_chat(filename):
     entry.config(state='normal')
     send_btn.config(state='normal')
 
+
 def save_current_chat():
     if not current_chat_file:
         return
@@ -101,6 +109,7 @@ def save_current_chat():
         content = chat_window.get(1.0, tk.END).strip().splitlines()
         for line in content:
             f.write(line + "\n")
+
 
 def send_message():
     user_msg = entry.get().strip()
@@ -120,6 +129,7 @@ def send_message():
     entry.delete(0, tk.END)
     save_current_chat()
 
+
 def scale_fonts(event):
     width = root.winfo_width()
     new_size = int(width / 60)
@@ -136,6 +146,7 @@ def scale_fonts(event):
     rename_btn.config(font=("Arial", new_size + 2))
     search_entry.config(font=("Arial", new_size))
 
+
 def create_new_chat():
     if not chat_folder:
         return
@@ -147,6 +158,7 @@ def create_new_chat():
         f.write("Python: Hello! This is a new chat.\n")
     update_chat_list()
     load_chat(filename[:-4])
+
 
 def delete_selected_chat():
     selection = chat_listbox.curselection()
@@ -165,6 +177,7 @@ def delete_selected_chat():
             chat_window.config(state='disabled')
         except:
             messagebox.showerror("Error", "Could not delete the selected chat.")
+
 
 def rename_selected_chat():
     selection = chat_listbox.curselection()
@@ -187,8 +200,8 @@ def rename_selected_chat():
         messagebox.showerror("Error", "Could not rename chat.")
 
 def click_me():
-    messagebox.showinfo("Info", "this dos nothing")
-
+    messagebox.showinfo("Info", "this dos nothing, only CREDITS. now you shold see credits hahahahahah")
+    webbrowser.open("https://nick.delfieh.com/python-chatbot/credits")
 # Setup window
 root = tk.Tk()
 root.title("Nick's Chatbot")
@@ -201,20 +214,6 @@ choose_chat_folder()
 left_frame = tk.Frame(root, width=200)
 left_frame.pack(side=tk.LEFT, fill='y')
 
-# Load and place the image at the top of the left panel
-try:
-
-    pil_img = Image.open("toplogo.png")
-    pil_img = pil_img.resize((64, 64), Image.ANTIALIAS)
-    top_img = ImageTk.PhotoImage(pil_img)
-
-    top_label = tk.Label(left_frame, image=top_img)
-    top_label.image = top_img  # ✅ Keep a reference so it doesn't disappear
-    top_label.pack(pady=(5, 0))
-
-except:
-    pass
-
 search_var = tk.StringVar()
 search_entry = tk.Entry(left_frame, textvariable=search_var, font=("Arial", 12))
 search_entry.pack(fill='x')
@@ -226,6 +225,8 @@ chat_listbox.bind("<<ListboxSelect>>", lambda e: load_chat(chat_listbox.get(chat
 
 btn_frame = tk.Frame(left_frame)
 btn_frame.pack(fill='x')
+
+
 
 create_btn = tk.Button(btn_frame, text="+ Create Chat", command=create_new_chat, font=("Arial", 16))
 create_btn.pack(fill='x')
