@@ -201,7 +201,7 @@ def rename_selected_chat():
 
 def click_me():
     messagebox.showinfo("Info", "this dos nothing, only CREDITS. now you shold see credits hahahahahah")
-    webbrowser.open("https://nick.delfieh.com/python-chatbot/credits")
+    webbrowser.open("https://github.com/nickdelfieh/pyhton-chatbot/wiki/credits")
 # Setup window
 root = tk.Tk()
 root.title("Nick's Chatbot")
